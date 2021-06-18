@@ -246,7 +246,8 @@ void gen_bin_name(as_bin_name name_buf, const char* bin_name, uint32_t bin_idx)
 		name_buf[sizeof(as_bin_name) - 1] = '\0';
 	}
 	else {
-		snprintf(name_buf, sizeof(as_bin_name), "%s_%d", bin_name, bin_idx + 1);
+		//snprintf(name_buf, sizeof(as_bin_name), "%s_%d", bin_name, bin_idx + 1);
+		snprintf(name_buf, sizeof(as_bin_name), "%d", bin_idx + 1);
 	}
 }
 

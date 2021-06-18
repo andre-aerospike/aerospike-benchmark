@@ -540,7 +540,7 @@ _parse_bins_selection(const char* bins_str, const obj_spec_t* obj_spec,
 		element_size = sizeof(uint32_t);
 	}
 
-	as_vector_init(&bins, element_size, 8);
+	as_vector_init(&bins, element_size, 1000);
 
 	while (*bins_str != '\0') {
 		char* endptr;
@@ -589,16 +589,23 @@ _parse_bins_selection(const char* bins_str, const obj_spec_t* obj_spec,
 		}
 	}
 
+//printf("Read %d bins\n", bins.size);
+
 	// this will append one last slot to the vector and zero that slot out
 	// (null-terminating the list)
 	as_vector_reserve(&bins);
+//printf("Read %d bins\n", bins.size);
 
 	// and now copy the vector to bins
 	bin_list = as_vector_to_array(&bins, n_bins_ptr);
+//printf("n_bins_ptr %d\n", *n_bins_ptr);
 	// don't count the null-terminating pointer
 	(*n_bins_ptr)--;
+//printf("n_bins_ptr %d\n", *n_bins_ptr);
 
 	as_vector_destroy(&bins);
+//printf("List %d bins\n", sizeof(bin_list));
+//exit(0);
 	return bin_list;
 }
 

@@ -231,6 +231,15 @@ _write_record_sync(tdata_t* tdata, cdata_t* cdata, thr_coord_t* coord,
 	return -1;
 }
 
+
+bool callback(const char *name, const as_val *value, void *udata)
+{
+	printf("%s found!\n", name);
+	return true;
+}
+
+
+
 LOCAL_HELPER int
 _read_record_sync(tdata_t* tdata, cdata_t* cdata, thr_coord_t* coord,
 		const stage_t* stage, as_key* key)
@@ -241,10 +250,26 @@ _read_record_sync(tdata_t* tdata, cdata_t* cdata, thr_coord_t* coord,
 
 	uint64_t start, end;
 	if (stage->read_bins) {
+
+#if 0
+printf("%d\n", stage->n_read_bins);
+for (int xx=0; xx<stage->n_read_bins; xx++)
+{
+	printf("-- %s\n", stage->read_bins[xx]);
+}
+#endif
 		start = cf_getus();
 		status = aerospike_key_select(&cdata->client, &err, NULL, key,
 				(const char**) stage->read_bins, &rec);
 		end = cf_getus();
+		// doink
+#if 0
+as_record_foreach(rec, callback, NULL);
+		blog_error("Read record: ns=%s set=%s key=%d bin=%s code=%d "
+					"message=%s\n",
+					cdata->namespace, cdata->set, key->value.integer.value,
+					stage->read_bins[0], status, rec);
+#endif
 	}
 	else {
 		start = cf_getus();
